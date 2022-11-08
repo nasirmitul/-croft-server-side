@@ -8,12 +8,12 @@ require('dotenv').config()
 
 //middleware
 app.use(cors())
-app.use(express())
+app.use(express.json())
 
 
 //database connection
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.4w35qx6.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri);
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
@@ -43,6 +43,13 @@ async function run() {
             const service = await serviceCollection.findOne(query);
             res.send(service);
         })
+
+        //getting add service data
+        app.post('/services', async(req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service)
+            res.send(result);
+        })  
     }
     finally {
 
