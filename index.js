@@ -23,7 +23,7 @@ async function run() {
         //creating api for services for home
         app.get('/home/services', async(req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const cursor = serviceCollection.find(query).sort({addedTime: -1});
             const services = await cursor.limit(3).toArray();
             res.send(services);
         })
