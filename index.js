@@ -61,7 +61,12 @@ async function run() {
 
         //creating api for reviews
         app.get('/reviews', async (req, res) => {
-            const query = {}
+            let query = {}
+            if(req.query.service_id){
+                query ={
+                    service_id: req.query.service_id
+                }
+            }
             const cursor = reviewCollection.find(query);
             const reviews = await cursor.toArray();
             res.send(reviews);
