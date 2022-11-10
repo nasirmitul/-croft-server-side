@@ -86,6 +86,34 @@ async function run() {
             res.send(reviews);
         })
 
+
+        //getting single review data
+        app.get('/reviews/:id', async(req, res) => {
+            const id= req.params.id;
+            const query = {_id: ObjectId(id)};
+            const review = await reviewCollection.findOne(query);
+            res.send(review)
+        })
+
+        //update my reviews
+        app.patch('/reviews/:id', async(req, res) => {
+            const id = req.params.id;
+            const query = {_id: ObjectId(id)};
+
+            const review = req.body;
+            console.log(review);
+
+            const updateReview = {
+                $set: {
+                    service_review: review.service_review
+                }
+            }
+
+            const result = await reviewCollection.updateOne(query, updateReview);
+            res.send(result);
+        })
+
+        //delete my reviews
         app.delete('/reviews/:id', async(req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
